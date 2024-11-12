@@ -1,26 +1,29 @@
-import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
-import {AuthContext} from "../../../providers"
+import React, { useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../providers";
 
 const Register = () => {
-  const {name, createUser} = useContext(AuthContext)
-  
-  const handleRegister = (e)=>{
-    e.preventDefault()
-    const name = e.target.name.value 
-    const email = e.target.email.value 
-    const password = e.target.password.value 
-    console.log(name,email,password)
+  const { name, createUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleRegister = (e) => {
+    e.preventDefault();
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    console.log(name, email, password);
 
     // create user
     createUser(email, password)
-    .then((result)=>{
-      console.log(result.user)
-    })
-    .then((error)=>{
-      console.log("Error:", error)
-    })
-  }
+      .then((result) => {
+        console.log(result.user);
+        e.target.reset();
+        navigate("/");
+      })
+      .then((error) => {
+        console.log("Error:", error);
+      });
+  };
 
   return (
     <div>
@@ -31,7 +34,7 @@ const Register = () => {
           </div>
           <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
             <form onSubmit={handleRegister} className="card-body">
-            <div className="form-control">
+              <div className="form-control">
                 <label className="label">
                   <span className="label-text">Name</span>
                 </label>
@@ -66,18 +69,19 @@ const Register = () => {
                   className="input input-bordered"
                   required
                 />
-              
               </div>
               <div className="form-control mt-6">
                 <button className="btn btn-primary">Register</button>
               </div>
             </form>
-            <p className="ml-4 mb-4 mr-4">Already have an account? Please <Link to="/login">Login</Link></p>
+            <p className="ml-4 mb-4 mr-4">
+              Already have an account? Please <Link to="/login">Login</Link>
+            </p>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;
